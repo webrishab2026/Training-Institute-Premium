@@ -183,16 +183,16 @@ const MENU_ITEMS: MenuItem[] = [
     subItems: [
       {
         name: "Join Job Support",
-        href: "/job-support/join",
+        href: "/industry-connect/join",
         external: false
       },
       {
         name: "Real Industry Projects",
-        href: "/job-support/real-projects"
+        href: "/industry-connect/real-projects"
 	   },
        {
 		 name: "Snowflake live lab",
-        href: "/job-support/snowflake-connect"
+        href: "/industry-connect/snowflake-connect"
 	   }
     ]
   },
