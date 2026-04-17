@@ -11,96 +11,6 @@ import CompanySlider from "@/components/company-slider";
 import { CheckIcon } from "lucide-react";
 import VideoSlider from "@/components/video-slider";
 
-// Default data (fallback if no customizations)
-const DEFAULT_STATS = [
-  { value: "5000+", label: "Students Trained" },
-  { value: "15+", label: "Professional Courses" },
-  { value: "98%", label: "Placement Rate" },
-  { value: "10+", label: "Years Experience" }
-];
-
-const DEFAULT_COURSES = [
-  {
-    title: "Informatica IICS COMBO",
-    description: "Master IICS, PowerCenter, SQL & Snowflake in 45 days",
-    image: "/courses/informatica.png",
-    href: "/courses/iics-combo-live"
-  },
-  { 
-    title: "Azure Data Engineering",
-    description: "Learn to build and optimize data solutions with Microsoft Azure.",
-    image: "/courses/azure.png",
-    href: "/courses/azure-combo-live"
-  },
-  { 
-    title: "Snowflake Training",
-    description: "Become proficient in Snowflake's cloud data platform.",
-    image: "/courses/snowflake.png",
-    href: "/courses/snowflake-combo-live"
-  },
-  {
-    title: "Performance Engineering",
-    description: "Master performance optimization techniques.",
-    image: "/courses/performance.png",
-    href: "/courses/performance-engineering"
-  }
-];
-
-const DEFAULT_WHY_CHOOSE_US = [
-  {
-    icon: <GraduationCap className="h-10 w-10" />,
-    title: "Expert Instructors",
-    description: "Learn from industry professionals with real-world experience."
-  },
-  {
-    icon: <BookOpen className="h-10 w-10" />,
-    title: "Comprehensive Curriculum",
-    description: "Courses covering both theory and practical applications."
-  },
-  {
-    icon: <Users className="h-10 w-10" />,
-    title: "Placement Assistance",
-    description: "Get help with resume building and interview preparation."
-  }
-];
-
-const DEFAULT_LEARNING_APPROACH = [
-  "Practical, hands-on training with real-world projects",
-  "Small batch sizes for personalized attention",
-  "Flexible learning options - online and offline",
-  "Regular assessments and feedback",
-  "Industry-aligned curriculum updated regularly"
-];
-
-const DEFAULT_BLOG_POSTS = [
-  {
-    title: "How to Land a High-Paying Software Job in 45 Days (2025 Proven Steps)",
-    excerpt: "🚀 Looking to break into the IT industry fast? Our powerful Combo Courses are designed to make you job-ready in just 45 days 💼",
-    date: "June 15, 2025",
-    href: "/blogs/job-in-45days"
-  },
-  {
-    title: "What Will You Learn in the IICS Combo online Training?",
-    excerpt: "Dive deep into our 45-day IICS Combo training program covering SQL, PowerCenter, IICS CDI & CAI, Snowflake...",
-    date: "June 10, 2025",
-    href: "/blogs/iics-combo-course-content"
-  }
-];
-
-const DEFAULT_HERO = {
-  title: "Kickstart Your Software Career in 45 Days with our COMBO Courses",
-  subtitle: "Rishab Informatica Group offers industry-leading courses in Informatica IICS Combo, Azure Data Eng. Combo, Snowflake Combo.",
-  tagline: "👉 Click to see how we make it happen!",
-  taglineLink: "/blogs/how-to-get-it-job-in-45days",
-  ctaText: "Explore Courses",
-  ctaLink: "/courses"
-};
-
-const DEFAULT_CTA = {
-  title: "Ready to Advance Your Career?",
-  subtitle: "Join thousands of successful professionals."
-};
-
 const slides = [
   { type: 'image', src: "/courses/informatica.png", alt: "Hands-on Practice" },
   { type: 'short-video', src: "/videos/video1.mp4", duration: 8000 },
@@ -127,66 +37,92 @@ export default function Home() {
           const response = await fetch(`https://webrishab.com/api/customizations?sessionId=${customerId}`);
           const data = await response.json();
           
-          console.log('🔍 API Response:', data);
+          console.log('🔍 API Response received:', data.exists ? 'YES' : 'NO');
           
           if (data.exists && data.customizations) {
             setCustomizations(data.customizations);
+            console.log('✅ Customizations loaded:', data.customizations.homepage?.heroTitle);
           }
         } catch (error) {
-          console.error('Failed to fetch customizations:', error);
+          console.error('Failed to fetch:', error);
         }
       }
       setLoading(false);
     };
-    
     fetchCustomizations();
   }, []);
 
-  // ✅ CRITICAL: Extract data from customizations (use defaults if not available)
-  const homepageData = customizations?.homepage || {};
-  const globalData = customizations?.global || {};
+  // ✅ Get ALL data from customizations (with fallbacks)
+  const homepage = customizations?.homepage || {};
+  const global = customizations?.global || {};
   
-  // Hero section - USE CUSTOMIZED VALUES
-  const heroTitle = homepageData.heroTitle || DEFAULT_HERO.title;
-  const heroSubtitle = homepageData.heroSubtitle || DEFAULT_HERO.subtitle;
-  const heroTagline = homepageData.heroTagline || DEFAULT_HERO.tagline;
-  const heroTaglineLink = homepageData.heroTaglineLink || DEFAULT_HERO.taglineLink;
-  const heroCtaText = homepageData.heroCtaText || DEFAULT_HERO.ctaText;
-  const heroCtaLink = homepageData.heroCtaLink || DEFAULT_HERO.ctaLink;
+  // Hero Section
+  const heroTitle = homepage.heroTitle || "Kickstart Your Software Career in 45 Days with our COMBO Courses";
+  const heroSubtitle = homepage.heroSubtitle || "Rishab Informatica Group offers industry-leading courses in Informatica IICS Combo, Azure Data Eng. Combo, Snowflake Combo.";
+  const heroTagline = homepage.heroTagline || "👉 Click to see how we make it happen!";
+  const heroTaglineLink = homepage.heroTaglineLink || "/blogs/how-to-get-it-job-in-45days";
+  const heroCtaText = homepage.heroCtaText || "Explore Courses";
+  const heroCtaLink = homepage.heroCtaLink || "/courses";
   
-  // Colors - USE CUSTOMIZED VALUES
-  const primaryColor = globalData.primaryColor || "#2563eb";
-  const businessName = globalData.businessName || "Rishab Informatica Group";
-  const pageBgColor = globalData.pageBgColor || "#ffffff";
+  // Colors
+  const primaryColor = global.primaryColor || "#2563eb";
+  const businessName = global.businessName || "Rishab Informatica Group";
+  const heroBgColor = homepage.heroBgColor || "#2563eb";
+  const heroTitleColor = homepage.heroTitleColor || "#1f2937";
+  const heroSubtitleColor = homepage.heroSubtitleColor || "#4b5563";
+  const statsBgColor = homepage.statsBgColor || "#ffffff";
+  const whyBgColor = homepage.whyBgColor || "#edf2f7";
+  const ctaBgColor = homepage.ctaBgColor || "#2b6cb0";
   
-  // Hero colors
-  const heroBgColor = homepageData.heroBgColor || "#2563eb";
-  const heroBgGradient = homepageData.heroBgGradient ?? true;
-  const heroTitleColor = homepageData.heroTitleColor || "#1f2937";
-  const heroSubtitleColor = homepageData.heroSubtitleColor || "#4b5563";
+  // ✅ STATS - Your "5000+ TEST" should appear here!
+  const stats = homepage.stats || [
+    { value: "5000+", label: "Students Trained" },
+    { value: "15+", label: "Professional Courses" },
+    { value: "98%", label: "Placement Rate" },
+    { value: "10+", label: "Years Experience" }
+  ];
   
-  // Stats, Courses, etc. - USE CUSTOMIZED VALUES
-  const stats = homepageData.stats || DEFAULT_STATS;
-  const courses = homepageData.courses || DEFAULT_COURSES;
-  const whyChooseUs = homepageData.whyChooseUs || DEFAULT_WHY_CHOOSE_US;
-  const learningApproach = homepageData.learningApproach || DEFAULT_LEARNING_APPROACH;
-  const blogPosts = homepageData.blogPosts || DEFAULT_BLOG_POSTS;
-  const ctaTitle = homepageData.ctaTitle || DEFAULT_CTA.title;
-  const ctaSubtitle = homepageData.ctaSubtitle || DEFAULT_CTA.subtitle;
+  // Courses
+  const courses = homepage.courses || [
+    { title: "Informatica IICS COMBO", description: "Master IICS, PowerCenter, SQL & Snowflake in 45 days", image: "/courses/informatica.png", href: "/courses/iics-combo-live" },
+    { title: "Azure Data Engineering", description: "Learn to build and optimize data solutions with Microsoft Azure.", image: "/courses/azure.png", href: "/courses/azure-combo-live" },
+    { title: "Snowflake Training", description: "Become proficient in Snowflake's cloud data platform.", image: "/courses/snowflake.png", href: "/courses/snowflake-combo-live" },
+    { title: "Performance Engineering", description: "Master performance optimization techniques.", image: "/courses/performance.png", href: "/courses/performance-engineering" }
+  ];
   
-  const statsBgColor = homepageData.statsBgColor || "#ffffff";
-  const whyBgColor = homepageData.whyBgColor || "#edf2f7";
-  const ctaBgColor = homepageData.ctaBgColor || "#2b6cb0";
+  // Why Choose Us
+  const whyChooseUs = homepage.whyChooseUs || [
+    { icon: <GraduationCap className="h-10 w-10" />, title: "Expert Instructors", description: "Learn from industry professionals with real-world experience." },
+    { icon: <BookOpen className="h-10 w-10" />, title: "Comprehensive Curriculum", description: "Courses covering both theory and practical applications." },
+    { icon: <Users className="h-10 w-10" />, title: "Placement Assistance", description: "Get help with resume building and interview preparation." }
+  ];
   
-  // Contact info
-  const phone1 = globalData.contactInfo?.phone?.split("/")[0]?.trim() || "+91 8970853557";
-  const phone2 = globalData.contactInfo?.phone?.split("/")[1]?.trim() || "9448005273";
+  // Learning Approach
+  const learningApproach = homepage.learningApproach || [
+    "Practical, hands-on training with real-world projects",
+    "Small batch sizes for personalized attention",
+    "Flexible learning options - online and offline",
+    "Regular assessments and feedback",
+    "Industry-aligned curriculum updated regularly"
+  ];
+  
+  // Blog Posts
+  const blogPosts = homepage.blogPosts || [
+    { title: "How to Land a High-Paying Software Job in 45 Days (2025 Proven Steps)", excerpt: "Looking to break into the IT industry fast?", date: "June 15, 2025", href: "/blogs/job-in-45days" },
+    { title: "What Will You Learn in the IICS Combo online Training?", excerpt: "Dive deep into our 45-day IICS Combo training program...", date: "June 10, 2025", href: "/blogs/iics-combo-course-content" }
+  ];
+  
+  // CTA
+  const ctaTitle = homepage.ctaTitle || "Ready to Advance Your Career?";
+  const ctaSubtitle = homepage.ctaSubtitle || "Join thousands of successful professionals.";
+  
+  // Contact
+  const phone1 = global.contactInfo?.phone?.split("/")[0]?.trim() || "+91 8970853557";
+  const phone2 = global.contactInfo?.phone?.split("/")[1]?.trim() || "9448005273";
 
-  const heroBg = heroBgGradient
-    ? `linear-gradient(to right, ${heroBgColor}10, ${heroBgColor}08, ${pageBgColor})`
-    : heroBgColor;
+  const heroBg = `linear-gradient(to right, ${heroBgColor}10, ${heroBgColor}08, #ffffff)`;
 
-  const renderTitleWithAccent = (title: string, primaryColor: string) => {
+  const renderTitleWithAccent = (title: string) => {
     const keyword = "COMBO Courses";
     if (!title?.includes(keyword)) return title;
     const [before, after] = title.split(keyword);
@@ -194,15 +130,11 @@ export default function Home() {
   };
 
   if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-      </div>
-    );
+    return <div className="flex justify-center items-center min-h-screen">Loading...</div>;
   }
 
   return (
-    <div className="flex flex-col gap-0" style={{ backgroundColor: pageBgColor }}>
+    <div className="flex flex-col gap-0">
       {/* Hero Section */}
       <div className="flex-1" style={{ background: heroBg }}>
         <section className="container mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-2">
@@ -210,14 +142,10 @@ export default function Home() {
           <div className="lg:hidden flex flex-col gap-4">
             <div className="flex flex-col justify-center space-y-3">
               <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl" style={{ color: heroTitleColor }}>
-                {renderTitleWithAccent(heroTitle, primaryColor)}
+                {renderTitleWithAccent(heroTitle)}
               </h1>
 
-              <Link 
-                href={heroTaglineLink}
-                className="text-lg font-medium hover:underline flex items-center"
-                style={{ color: primaryColor }}
-              >
+              <Link href={heroTaglineLink} className="text-lg font-medium hover:underline flex items-center" style={{ color: primaryColor }}>
                 {heroTagline}
               </Link>
 
@@ -237,7 +165,7 @@ export default function Home() {
                 <Button asChild size="lg" className="rounded-full text-sm w-1/2" style={{ backgroundColor: primaryColor }}>
                   <Link href={heroCtaLink}>{heroCtaText}</Link>
                 </Button>
-                <Button asChild variant="outline" size="lg" className="rounded-full text-sm w-1/2 bg-transparent border-gray-300 hover:bg-gray-50">
+                <Button asChild variant="outline" size="lg" className="rounded-full text-sm w-1/2">
                   <Link href="/contact">Contact Us</Link>
                 </Button>
               </div>
@@ -252,14 +180,10 @@ export default function Home() {
           <div className="hidden lg:grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div className="flex flex-col justify-center space-y-3">
               <h1 className="text-5xl font-extrabold tracking-tight" style={{ color: heroTitleColor }}>
-                {renderTitleWithAccent(heroTitle, primaryColor)}
+                {renderTitleWithAccent(heroTitle)}
               </h1>
               
-              <Link 
-                href={heroTaglineLink}
-                className="text-lg font-medium hover:underline flex items-center"
-                style={{ color: primaryColor }}
-              >
+              <Link href={heroTaglineLink} className="text-lg font-medium hover:underline flex items-center" style={{ color: primaryColor }}>
                 {heroTagline}
               </Link>
               
@@ -272,7 +196,7 @@ export default function Home() {
                   <Button asChild size="lg" className="rounded-full text-sm" style={{ backgroundColor: primaryColor }}>
                     <Link href={heroCtaLink}>{heroCtaText}</Link>
                   </Button>
-                  <Button asChild variant="outline" size="lg" className="rounded-full text-sm border-gray-300 hover:bg-gray-50">
+                  <Button asChild variant="outline" size="lg" className="rounded-full text-sm">
                     <Link href="/contact">Contact Us</Link>
                   </Button>
                 </div>
@@ -318,10 +242,10 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Stats Section */}
+      {/* Stats Section - Your "5000+ TEST" will appear here! */}
       <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-8" style={{ backgroundColor: statsBgColor }}>
         <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
-          {stats.map((stat, index) => (
+          {stats.map((stat: any, index: number) => (
             <div key={index} className="flex flex-col items-center justify-center rounded-lg bg-muted p-6 text-center">
               <span className="text-3xl font-bold" style={{ color: primaryColor }}>{stat.value}</span>
               <span className="mt-2 text-sm text-muted-foreground">{stat.label}</span>
@@ -331,7 +255,7 @@ export default function Home() {
       </section>
 
       {/* Featured Courses Section */}
-      <section className="container mx-auto px-4 sm:px-6 lg:pt-8 pb-16" style={{ backgroundColor: pageBgColor }}>
+      <section className="container mx-auto px-4 sm:px-6 lg:pt-8 pb-16">
         <div className="text-center">
           <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Our Top Courses</h2>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
@@ -339,32 +263,12 @@ export default function Home() {
           </p>
         </div>
         <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
-          {courses.map((course, index) => (
+          {courses.map((course: any, index: number) => (
             <div key={index} className="group relative overflow-hidden rounded-xl border bg-card shadow-sm transition-all hover:shadow-md">
-              <Image 
-                src={course.image} 
-                width={400} 
-                height={225} 
-                alt={course.title} 
-                className="h-48 w-full object-cover"
-              />
+              <Image src={course.image} width={400} height={225} alt={course.title} className="h-48 w-full object-cover" />
               <div className="p-6">
                 <h3 className="text-xl font-bold">{course.title}</h3>
                 <p className="mt-2 text-muted-foreground">{course.description}</p>
-                <ul className="mt-4 space-y-2">
-                  <li className="flex items-center gap-2">
-                    <CheckIcon className="h-4 w-4 text-green-500" />
-                    <span>Live Training</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckIcon className="h-4 w-4 text-green-500" />
-                    <span>Placement Assistance</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckIcon className="h-4 w-4 text-green-500" />
-                    <span>Real-time Projects</span>
-                  </li>
-                </ul>
                 <Button asChild className="mt-6 w-full" style={{ backgroundColor: primaryColor }}>
                   <Link href={course.href}>Enroll Now</Link>
                 </Button>
@@ -389,7 +293,7 @@ export default function Home() {
             </p>
           </div>
           <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-3">
-            {whyChooseUs.map((item, index) => (
+            {whyChooseUs.map((item: any, index: number) => (
               <div key={index} className="flex flex-col items-center rounded-lg bg-background p-8 text-center shadow-sm hover:shadow-md transition-shadow">
                 <div className="rounded-full bg-primary/10 p-4 text-primary">
                   {item.icon}
@@ -418,16 +322,10 @@ export default function Home() {
       </section>
 
       {/* Learning Approach Section */}
-      <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-16" style={{ backgroundColor: pageBgColor }}>
+      <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
           <div className="flex items-center justify-center">
-            <Image
-              src="/images/approach.jpeg"
-              width={600}
-              height={400}
-              alt="Learning approach"
-              className="rounded-xl shadow-lg"
-            />
+            <Image src="/images/approach.jpeg" width={600} height={400} alt="Learning approach" className="rounded-xl shadow-lg" />
           </div>
           <div className="flex flex-col justify-center">
             <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Our Learning Approach</h2>
@@ -435,7 +333,7 @@ export default function Home() {
               Practical training that prepares you for real-world challenges.
             </p>
             <ul className="mt-8 space-y-4">
-              {learningApproach.map((item, index) => (
+              {learningApproach.map((item: string, index: number) => (
                 <li key={index} className="flex items-start">
                   <CheckCircle className="mr-3 h-6 w-6 shrink-0 text-primary" />
                   <span className="text-lg">{item}</span>
@@ -447,7 +345,7 @@ export default function Home() {
       </section>
 
       {/* Latest Blogs Section */}
-      <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-16" style={{ backgroundColor: pageBgColor }}>
+      <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="text-center">
           <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Latest from Our Blog</h2>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
@@ -455,7 +353,7 @@ export default function Home() {
           </p>
         </div>
         <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {blogPosts.map((post, index) => (
+          {blogPosts.map((post: any, index: number) => (
             <Card key={index} className="overflow-hidden hover:shadow-lg transition-shadow">
               <CardContent className="p-6">
                 <div className="text-sm text-muted-foreground">{post.date}</div>
@@ -491,21 +389,11 @@ export default function Home() {
             </Button>
           </div>
           <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a 
-              href={`tel:${phone1.replace(/\s/g, '')}`} 
-              className="flex items-center gap-2 text-base font-semibold text-white hover:underline"
-            >
-              <Phone className="h-5 w-5" />
-              Call: {phone1}
+            <a href={`tel:${phone1.replace(/\s/g, '')}`} className="flex items-center gap-2 text-base font-semibold text-white hover:underline">
+              <Phone className="h-5 w-5" /> Call: {phone1}
             </a>
-            <a 
-              href={`https://wa.me/${phone1.replace(/[^0-9]/g, '')}`} 
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 text-base font-semibold text-white hover:underline"
-            >
-              <MessageCircle className="h-5 w-5" />
-              WhatsApp Us
+            <a href={`https://wa.me/${phone1.replace(/[^0-9]/g, '')}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-base font-semibold text-white hover:underline">
+              <MessageCircle className="h-5 w-5" /> WhatsApp Us
             </a>
           </div>
         </div>
