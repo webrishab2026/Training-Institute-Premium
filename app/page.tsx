@@ -26,29 +26,55 @@ export default function Home() {
   const [customizations, setCustomizations] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+ useEffect(() => {
     const fetchCustomizations = async () => {
       const customerId = process.env.NEXT_PUBLIC_CUSTOMER_ID;
-      
+
       console.log('🔍 Customer ID:', customerId);
-      
-      if (customerId) {
-        try {
-          const response = await fetch(`https://webrishab.com/api/customizations?sessionId=${customerId}`);
-          const data = await response.json();
-          
-          console.log('🔍 API Response received:', data.exists ? 'YES' : 'NO');
-          
-          if (data.exists && data.customizations) {
-            setCustomizations(data.customizations);
-            console.log('✅ Customizations loaded:', data.customizations.homepage?.heroTitle);
-          }
-        } catch (error) {
-          console.error('Failed to fetch:', error);
-        }
+
+      if (!customerId) {
+        setLoading(false);
+        return;
       }
+
+      // ✅ NEW: Retry up to 5 times with 2s delay if DB isn't ready yet
+      const fetchWithRetry = async (retries = 5, delay = 2000) => {
+        for (let i = 0; i < retries; i++) {
+          try {
+            const response = await fetch(
+              `https://webrishab.com/api/customizations?sessionId=${customerId}`
+            );
+            const data = await response.json();
+
+            console.log(`🔄 Attempt ${i + 1}: exists=${data.exists}`);
+
+            if (data.exists && data.customizations) {
+              return data.customizations;
+            }
+          } catch (error) {
+            console.error(`Attempt ${i + 1} failed:`, error);
+          }
+
+          // Wait before retrying (except on last attempt)
+          if (i < retries - 1) {
+            await new Promise((r) => setTimeout(r, delay));
+          }
+        }
+        return null;
+      };
+
+      const customizationData = await fetchWithRetry();
+
+      if (customizationData) {
+        setCustomizations(customizationData);
+        console.log('✅ Customizations loaded:', customizationData.homepage?.heroTitle);
+      } else {
+        console.warn('⚠️ No customizations found after retries — using defaults');
+      }
+
       setLoading(false);
     };
+
     fetchCustomizations();
   }, []);
 
