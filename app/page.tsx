@@ -57,7 +57,7 @@ export default function Home() {
   const global = customizations?.global || {};
   
   // Hero Section
-  const heroTitle = homepage.heroTitle || "Kickstart Your Software Career in 45 Days with our COMBO Courses";
+  const heroTitle = homepage.heroTitle || "Get software join in 45 days";
   const heroSubtitle = homepage.heroSubtitle || "Rishab Informatica Group offers industry-leading courses in Informatica IICS Combo, Azure Data Eng. Combo, Snowflake Combo.";
   const heroTagline = homepage.heroTagline || "👉 Click to see how we make it happen!";
   const heroTaglineLink = homepage.heroTaglineLink || "/blogs/how-to-get-it-job-in-45days";
