@@ -76,8 +76,8 @@ export default function Home() {
   
   // ✅ STATS - Your "5000+ TEST" should appear here!
   const stats = homepage.stats || [
-    { value: "5000+", label: "Students Trained" },
-    { value: "15+", label: "Professional Courses" },
+    { value: "5000+test ", label: "Students Trained" },
+    { value: "15+test ", label: "Professional Courses" },
     { value: "98%", label: "Placement Rate" },
     { value: "10+", label: "Years Experience" }
   ];
