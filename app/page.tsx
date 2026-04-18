@@ -41,12 +41,7 @@ export default function Home() {
         }
 
        const response = await fetch(
-  `https://f575-115-99-222-168.ngrok-free.app/api/customizations?sessionId=${customerId}`,
-  {
-    headers: {
-      'ngrok-skip-browser-warning': 'true'
-    }
-  }
+  `https://sense-annotation-organisation-duration.trycloudflare.com/api/customizations?sessionId=${customerId}`
 );
         const data = await response.json();
 
