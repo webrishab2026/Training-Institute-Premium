@@ -40,9 +40,14 @@ export default function Home() {
           return;
         }
 
-        const response = await fetch(
-          `https://webrishab.com/api/customizations?sessionId=${customerId}`
-        );
+       const response = await fetch(
+  `https://f575-115-99-222-168.ngrok-free.app/api/customizations?sessionId=${customerId}`,
+  {
+    headers: {
+      'ngrok-skip-browser-warning': 'true'
+    }
+  }
+);
         const data = await response.json();
 
         if (data.exists && data.customizations) {
