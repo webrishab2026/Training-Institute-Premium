@@ -24,7 +24,7 @@ const slides = [
 
 export default function Home() {
   const [customizations, setCustomizations] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchCustomizations = async () => {
@@ -143,10 +143,6 @@ export default function Home() {
     const [before, after] = title.split(keyword);
     return <>{before}<span style={{ color: primaryColor }}>{keyword}</span>{after}</>;
   };
-
-  if (loading) {
-    return <div className="flex justify-center items-center min-h-screen">Loading...</div>;
-  }
 
   return (
     <div className="flex flex-col gap-0">
