@@ -41,7 +41,7 @@ export default function Home() {
         }
 
        const response = await fetch(
-  `https://sense-annotation-organisation-duration.trycloudflare.com/api/customizations?sessionId=${customerId}`
+  `https://sense-annotation-organisation-duration.trycloudflare.com/api/customizations?sessionId=${customerId`
 );
         const data = await response.json();
 
