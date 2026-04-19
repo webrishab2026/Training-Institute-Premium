@@ -6,7 +6,7 @@ async function getCustomizations() {
     if (!customerId) return null;
 
     const response = await fetch(
-      `https://sense-annotation-organisation-duration.trycloudflare.com/api/customizations?sessionId=${customerId}`,
+      `https://https://lawyer-tattoo-silly-interface.trycloudflare.com/api/customizations?sessionId=${customerId}`,
       { cache: 'no-store' }
     );
     const data = await response.json();
