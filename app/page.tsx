@@ -6,7 +6,7 @@ async function getCustomizations() {
     if (!customerId) return null;
 
     const response = await fetch(
-      `https://lawyer-tattoo-silly-interface.trycloudflare.com/api/customizations?sessionId=${customerId}`,
+      `https://samples-supported-seo-spice.trycloudflare.com/api/customizations?sessionId=${customerId}`,
       { cache: 'no-store' }
     );
     const data = await response.json();
