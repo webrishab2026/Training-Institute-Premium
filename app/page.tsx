@@ -6,7 +6,7 @@ async function getCustomizations() {
     if (!customerId) return null;
 
     const response = await fetch(
-       `https://lectures-followed-www-upc.trycloudflare.com/api/customizations?sessionId=${customerId}`,
+       `https://supplied-paper-dreams-dans.trycloudflare.com/api/customizations?sessionId=${customerId}`,
       { cache: 'no-store' }
     );
     const data = await response.json();
