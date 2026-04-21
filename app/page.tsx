@@ -6,7 +6,7 @@ async function getCustomizations() {
     if (!customerId) return null;
 
     const response = await fetch(
-       `https://pension-bridge-cage-monthly.trycloudflare.com/api/customizations?sessionId=${customerId}`,
+       `https://webrisab.xyz/api/customizations?sessionId=${customerId}`,
       { cache: 'no-store' }
     );
     const data = await response.json();
